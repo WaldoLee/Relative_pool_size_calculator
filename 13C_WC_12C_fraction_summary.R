@@ -54,17 +54,17 @@ R_calculator <- function (col_num = 3) {
   return(result_df)
 }
 #############################################################################
-create_result_summary_df <- function(){
+create_result_summary_df <- function(input_data=neg_table){
   result_summary <- vector()
-  for (i in 3:ncol(neg_table)) {
+  for (i in 3:ncol(input_data)) {
     result_table <- R_calculator(i)
     result_table_trim <- result_table[,4]
     result_table_trim <- as.vector(result_table_trim)
     result_summary <- rbind(result_summary, result_table_trim)
   }
   colnames(result_summary) <- R_calculator(3)[,1]
-  #rownames(result_summary) <- substr(colnames(neg_table)[3:ncol(neg_table)], 27, 30)
-  rownames(result_summary) <- colnames(neg_table)[3:ncol(neg_table)]
+  #rownames(result_summary) <- substr(colnames(input_data)[3:ncol(input_data)], 27, 30)
+  rownames(result_summary) <- colnames(input_data)[3:ncol(input_data)]
   result_summary_df <- as.data.frame(result_summary)
   result_summary_df <- data.frame(t(result_summary_df))
   return(result_summary_df)
