@@ -70,6 +70,7 @@ create_R_summary_df <- function(input_data=neg_table){
 }
 
 R_summary <- create_R_summary_df()
+R_summary <- t(R_summary)
 #############################################################################
 write.xlsx(x = R_summary, file = "C:/Users/biology/Desktop/LAB DB/Project_ing/Spatial fluxomics/1. Rapid fractionation/2 experiment/LCMS result/20170429_13C_gln_glc_WC_12C_fraction_relative_pool_size_neg/relative_pool_size_neg.xlsx", sheetName = "R_summary", row.names = TRUE)
 #############################################################################
@@ -90,6 +91,7 @@ create_WC_fraction <- function(input_data=neg_table){
 }
 
 WC_fraction <- create_WC_fraction()
+WC_fraction <- t(WC_fraction)
 #############################################################################
 write.xlsx(x = WC_fraction, file = "C:/Users/biology/Desktop/LAB DB/Project_ing/Spatial fluxomics/1. Rapid fractionation/2 experiment/LCMS result/20170429_13C_gln_glc_WC_12C_fraction_relative_pool_size_neg/relative_pool_size_neg.xlsx", sheetName = "WC_fraction", row.names = TRUE, append=TRUE)
 #############################################################################
