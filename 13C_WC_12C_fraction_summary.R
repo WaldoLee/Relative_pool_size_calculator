@@ -1,10 +1,10 @@
 library(xlsx)
 #############################################################################
 # Input data
-neg_source <- "C://Users/biology/Desktop/LAB DB/Project_ing/Spatial fluxomics/2. Rapid fractionation_validation/RERUN_20160929_13Gln_13Glc_WC_MT_CY_neg/RERUN_20160929_13Gln_13Glc_WC_MT_CY_neg.csv"
+neg_source <- "C:/Users/biology/Desktop/LAB DB/Project_ing/Spatial fluxomics/1. Rapid fractionation/2 experiment/LCMS result/20170429_13C_gln_glc_WC_12C_fraction_relative_pool_size_neg/relative_pool_size_neg.csv"
 neg_table <- read.csv(neg_source, header = TRUE)
 head(neg_table)
-neg_table <- neg_table[, c(8, 9, 15, 16, 18, 19, 21, 22, 24, 25, 27, 28, 30, 31, 33, 34, 36, 37, 39, 40, 42, 43)]
+neg_table <- neg_table[, c(8, 9, 15, 17, 19, 21, 23, 25, 27, 29, 31)]
 neg_table <- as.matrix(neg_table)
 #############################################################################
 # R_calculator
@@ -54,7 +54,7 @@ R_calculator <- function (col_num = 3) {
   return(result_df)
 }
 #############################################################################
-create_result_summary_df <- function(input_data=neg_table){
+create_R_summary_df <- function(input_data=neg_table){
   result_summary <- vector()
   for (i in 3:ncol(input_data)) {
     result_table <- R_calculator(i)
@@ -63,16 +63,34 @@ create_result_summary_df <- function(input_data=neg_table){
     result_summary <- rbind(result_summary, result_table_trim)
   }
   colnames(result_summary) <- R_calculator(3)[,1]
-  #rownames(result_summary) <- substr(colnames(input_data)[3:ncol(input_data)], 27, 30)
   rownames(result_summary) <- colnames(input_data)[3:ncol(input_data)]
   result_summary_df <- as.data.frame(result_summary)
   result_summary_df <- data.frame(t(result_summary_df))
   return(result_summary_df)
 }
 
-final_result <- create_result_summary_df()
+R_summary <- create_R_summary_df()
 #############################################################################
-write.xlsx(x = final_result, file = "C://Users/biology/Desktop/LAB DB/Project_ing/Spatial fluxomics/2. Rapid fractionation_validation/RERUN_20160929_13Gln_13Glc_WC_MT_CY_neg/20160929_13C_12C_summary.xlsx", sheetName = "TestSheet", row.names = TRUE)
+write.xlsx(x = R_summary, file = "C:/Users/biology/Desktop/LAB DB/Project_ing/Spatial fluxomics/1. Rapid fractionation/2 experiment/LCMS result/20170429_13C_gln_glc_WC_12C_fraction_relative_pool_size_neg/relative_pool_size_neg.xlsx", sheetName = "R_summary", row.names = TRUE)
+#############################################################################
+create_WC_fraction <- function(input_data=neg_table){
+  result_summary <- vector()
+  for (i in 3:ncol(input_data)) {
+    result_table <- R_calculator(i)
+    result_table <- as.matrix(result_table)
+    result_table_trim <- as.numeric(result_table[,2])/(as.numeric(result_table[,2])+as.numeric(result_table[,3]))
+    result_table_trim <- as.vector(result_table_trim)
+    result_summary <- rbind(result_summary, result_table_trim)
+  }
+  colnames(result_summary) <- R_calculator(3)[,1]
+  rownames(result_summary) <- colnames(input_data)[3:ncol(input_data)]
+  result_summary_df <- as.data.frame(result_summary)
+  result_summary_df <- data.frame(t(result_summary_df))
+  return(result_summary_df)
+}
+
+WC_fraction <- create_WC_fraction()
+#############################################################################
+write.xlsx(x = WC_fraction, file = "C:/Users/biology/Desktop/LAB DB/Project_ing/Spatial fluxomics/1. Rapid fractionation/2 experiment/LCMS result/20170429_13C_gln_glc_WC_12C_fraction_relative_pool_size_neg/relative_pool_size_neg.xlsx", sheetName = "WC_fraction", row.names = TRUE, append=TRUE)
 #############################################################################
 
-?substr
